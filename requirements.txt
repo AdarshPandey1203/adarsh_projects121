@@ -1,6 +1,7 @@
 gunicorn
 gevent
 google-genai
+google-generativeai
 python-multipart
 beautifulsoup4
 requests
