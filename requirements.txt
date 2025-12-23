@@ -1,0 +1,21 @@
+<<<<<<< HEAD
+fastapi
+uvicorn
+=======
+gunicorn
+>>>>>>> 8a15bb9 (feat: Deploy on Render)
+google-genai
+python-multipart
+beautifulsoup4
+requests
+flask
+python-dotenv
+duckduckgo-search
+PyPDF2
+<<<<<<< HEAD
+python-docx
+ddgs
+google-generativeai
+=======
+python-docx
+>>>>>>> 8a15bb9 (feat: Deploy on Render)

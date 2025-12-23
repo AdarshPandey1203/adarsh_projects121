@@ -1,0 +1,511 @@
+:root {
+    /* Light Mode Palette (Inspired by ChatGPT) */
+    --bg-color: #f7f7f8; /* Very light gray */
+    --text-color: #343541; /* Dark gray */
+    --sidebar-bg: #f0f0f0; /* Light gray for sidebar */
+    --sidebar-text: #343541;
+    --chat-bubble-user-bg: #dcf8c6; /* Light green for user messages */
+    --chat-bubble-assistant-bg: #ffffff; /* White for assistant messages */
+    --border-color: #ececf1; /* Subtle border */
+    --output-bg: #ffffff; /* White output background */
+    --primary-color: #10a37f; /* ChatGPT's green accent */
+    --primary-hover-color: #0e8a6a; /* Darker green for hover */
+    --secondary-text-color: #6e6e80; /* Muted gray for secondary text */
+    --button-text-color: #ffffff;
+    --toggle-ball-color: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #e0e0e0;
+}
+
+.dark-mode {
+    /* Dark Mode Palette (Inspired by ChatGPT) */
+    --bg-color: #343541; /* Dark gray background */
+    --text-color: #ececf1; /* Off-white text */
+    --sidebar-bg: #202123; /* Darker gray for sidebar */
+    --sidebar-text: #ececf1;
+    --chat-bubble-user-bg: #3c3c4f; /* Darker gray for user messages */
+    --chat-bubble-assistant-bg: #40414f; /* Slightly lighter dark gray for assistant */
+    --border-color: #555663; /* Darker subtle border */
+    --output-bg: #40414f;
+    --primary-color: #1a9c80; /* Adjusted green accent for dark mode */
+    --primary-hover-color: #10806a;
+    --secondary-text-color: #a0a0b0;
+    --button-text-color: #ffffff;
+    --toggle-ball-color: #ffffff;
+    --input-bg: #40414f;
+    --input-border: #555663;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-color);
+    font-family: 'Open Sans', sans-serif; /* Changed font */
+    font-size: 16px;
+    line-height: 1.5;
+    display: flex;
+    height: 100vh;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+    width: 0; /* Initially hidden */
+    background: var(--sidebar-bg);
+    padding: 0; /* No padding when hidden */
+    display: flex;
+    flex-direction: column;
+    color: var(--sidebar-text);
+    overflow: hidden; /* Hide content when collapsed */
+    transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, background-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0; /* Prevent sidebar from shrinking below its content */
+    box-shadow: 2px 0 15px rgba(0,0,0,0.1); /* Subtle shadow even when closed */
+}
+
+.sidebar.sidebar-open {
+    width: 250px; /* Show sidebar */
+    padding: 20px; /* Restore padding when open */
+    box-shadow: 2px 0 15px rgba(0,0,0,0.2); /* Stronger shadow when open */
+}
+
+.sidebar h2 {
+    color: var(--sidebar-text);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+#historyList li {
+    padding: 10px;
+    margin-bottom: 8px; /* Adjusted margin */
+    background: var(--chat-bubble-assistant-bg);
+    border-radius: 6px; /* Slightly smaller radius */
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.9em;
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: var(--border-color);
+}
+
+
+#historyList li:hover {
+    background: var(--border-color); /* Lighter hover */
+}
+
+#newChatBtn, #clearHistoryBtn {
+    padding: 10px 12px; /* Adjusted padding */
+    background: var(--primary-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 6px; /* Adjusted radius */
+    font-size: 0.95em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition */
+}
+
+#newChatBtn:hover, #clearHistoryBtn:hover {
+    background: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+.container {
+    flex-grow: 1; /* Fills remaining space */
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Adjusted padding */
+    overflow-y: auto;
+    position: relative; /* For positioning sidebar toggle button */
+}
+
+.sidebar-toggle-btn {
+    position: absolute; /* Position relative to .container */
+    top: 15px;
+    left: 15px;
+    background: transparent; /* Transparent background */
+    color: var(--secondary-text-color); /* Muted color */
+    border: none;
+    border-radius: 50%; /* Make it round */
+    font-size: 28px; /* Larger icon */
+    padding: 5px;
+    width: 40px; /* Fixed width for roundness */
+    height: 40px; /* Fixed height for roundness */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.sidebar-toggle-btn:hover {
+    background: var(--border-color); /* Subtle hover effect */
+    color: var(--text-color); /* Make icon darker on hover */
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 25px; /* Adjusted margin */
+    /* Removed margin-left: 40px; */
+    transition: color 0.3s ease;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.input-area {
+    margin-top: 20px;
+    padding-top: 15px; /* Add some padding-top for visual separation */
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--border-color); /* Subtle separator */
+}
+
+textarea {
+    flex-grow: 1;
+    min-height: 40px; /* Slightly increased min-height for better appearance */
+    max-height: 180px; /* Increased max-height */
+    padding: 12px 16px; /* Adjusted padding */
+    font-size: 1em;
+    border-radius: 20px; /* More rounded corners */
+    border: 1px solid var(--input-border); /* Softer border */
+    resize: vertical;
+    outline: none;
+    transition: all 0.3s ease;
+    background: var(--input-bg);
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.2); /* Softer focus ring */
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Reduced gap */
+    flex-wrap: wrap;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 50px;
+}
+
+#customFileInputButton {
+    padding: 8px 12px; /* Adjusted padding */
+    background: var(--input-border); /* Neutral background */
+    color: var(--secondary-text-color);
+    border: none;
+    border-radius: 20px; /* More rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+    flex-shrink: 0;
+    font-size: 0.9em;
+}
+
+#customFileInputButton:hover {
+    background: var(--border-color);
+    transform: translateY(-1px);
+    color: var(--text-color);
+}
+
+#selectedFilesDisplay {
+    font-size: 0.85em; /* Smaller font size */
+    color: var(--secondary-text-color);
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#submitBtn {
+    width: auto;
+    padding: 12px 20px; /* Adjusted padding */
+    margin-top: 0;
+    flex-shrink: 0;
+    border-radius: 20px; /* More rounded corners */
+    background: var(--primary-color);
+    color: var(--button-text-color);
+    border: none;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease;
+}
+
+#submitBtn:hover {
+    background: var(--primary-hover-color);
+    transform: translateY(-2px);
+}
+
+#loading {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.1em;
+    color: var(--primary-color);
+}
+
+#outputBox {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--output-bg);
+    border-radius: 12px; /* Adjusted radius */
+    margin-bottom: 10px;
+    position: relative;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+.hidden {
+    display: none;
+}
+
+#outputText {
+    font-size: 1em;
+    color: var(--text-color);
+    line-height: 1.6; /* Improved line height for readability */
+}
+
+#outputText p {
+    margin-bottom: 1em; /* Spacing between paragraphs */
+}
+
+#outputText h1, #outputText h2, #outputText h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#outputText h1 { font-size: 1.8em; }
+#outputText h2 { font-size: 1.5em; }
+#outputText h3 { font-size: 1.2em; }
+
+#outputText ul, #outputText ol {
+    margin-left: 20px;
+    margin-bottom: 1em;
+}
+
+#outputText li {
+    margin-bottom: 0.5em;
+}
+
+#outputText code {
+    background-color: var(--border-color);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: 'Fira Code', 'Cascadia Code', monospace; /* Monospaced font for code */
+    font-size: 0.9em;
+}
+
+
+.message {
+    padding: 15px; /* Adjusted padding */
+    border-radius: 12px; /* Adjusted radius */
+    margin-bottom: 12px; /* Adjusted margin */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Subtle shadow for messages */
+}
+
+.message-user {
+    background: var(--chat-bubble-user-bg);
+    text-align: right;
+    color: var(--text-color);
+    margin-left: auto; /* Push user message to right */
+    max-width: 80%; /* Limit width */
+}
+
+.message-assistant {
+    background: var(--chat-bubble-assistant-bg);
+    color: var(--text-color);
+    margin-right: auto; /* Push assistant message to left */
+    max-width: 80%; /* Limit width */
+}
+
+.sources {
+    margin-top: 20px; /* Adjusted margin */
+    padding-top: 15px; /* Adjusted padding */
+    border-top: 1px solid var(--border-color);
+}
+
+.sources h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.sources ul {
+    list-style-type: disc;
+    padding-left: 25px; /* Adjusted padding */
+    margin: 0;
+}
+
+.sources li {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.sources a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.sources a:hover {
+    text-decoration: underline;
+    color: var(--primary-hover-color);
+}
+
+.output-actions {
+    position: absolute;
+    top: 15px; /* Adjusted position */
+    right: 15px; /* Adjusted position */
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.output-icon {
+    cursor: pointer;
+    font-size: 22px; /* Slightly larger icon */
+    color: var(--secondary-text-color);
+    transition: color 0.2s ease-in-out, transform 0.2s ease;
+}
+
+.output-icon:hover {
+    color: var(--primary-color);
+    transform: scale(1.1); /* Subtle zoom effect */
+}
+
+#summary {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1em;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+#summary h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+#researchPapers {
+    margin-top: 20px;
+}
+
+/* Theme Toggle styles */
+.theme-toggle {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.checkbox {
+    opacity: 0;
+    position: absolute;
+}
+
+.label {
+    background-color: var(--input-border); /* Changed to use input-border for neutral background */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 50px;
+    position: relative;
+    padding: 5px;
+    height: 26px;
+    width: 50px;
+    transform: scale(1.3); /* Slightly smaller scale */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.label .ball {
+    background-color: var(--toggle-ball-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 22px;
+    width: 22px;
+    transform: translateX(0px);
+    transition: transform 0.2s linear;
+}
+
+.checkbox:checked + .label .ball {
+    transform: translateX(24px);
+}
+
+/* Icons for the toggle switch */
+.label::before {
+    content: '☀️';
+    font-size: 14px;
+    color: gold;
+    position: absolute;
+    left: 8px;
+    transition: opacity 0.2s ease;
+}
+
+.label::after {
+    content: '🌙';
+    font-size: 14px;
+    color: silver;
+    position: absolute;
+    right: 8px;
+    transition: opacity 0.2s ease;
+}
+
+.checkbox:checked + .label::before {
+    opacity: 0;
+}
+
+.checkbox:checked + .label::after {
+    opacity: 1;
+}
+
+.checkbox:not(:checked) + .label::after {
+    opacity: 0;
+}

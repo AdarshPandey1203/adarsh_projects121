@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Research AI Agent</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="main-container">
+    <div class="sidebar">
+        <h2>Chat History</h2>
+        <ul id="historyList"></ul>
+        <div class="theme-toggle">
+            <input type="checkbox" id="themeToggle" class="checkbox">
+            <label for="themeToggle" class="label"></label>
+        </div>
+        <button id="newChatBtn">New Chat</button>
+        <button id="clearHistoryBtn">Clear History</button>
+    </div>
+    <div class="container">
+        <button id="sidebarToggle" class="sidebar-toggle-btn">&#9776;</button>
+        <h1>Deep Research AI Agent</h1>
+
+        <div id="outputBox" class="hidden">
+            <div id="outputText"></div>
+            <div id="summary"></div>
+            <div id="researchPapers"></div>
+            <div class="output-actions">
+                <span id="copyBtn" class="output-icon" title="Copy Output">📋</span>
+                <span id="shareBtn" class="output-icon" title="Share Output">📤</span>
+            </div>
+        </div>
+        
+        <div id="loading" class="hidden">
+            <p>⏳ Processing your research...</p>
+        </div>
+
+                    <div class="input-area">
+                        <textarea id="query" placeholder="Type your research question here..."></textarea>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="fileInput" multiple class="hidden-file-input">
+                            <button id="customFileInputButton" type="button">📎 Attach Files</button>
+                            <span id="selectedFilesDisplay"></span>
+                        </div>
+                        <button id="submitBtn">Send</button>
+                    </div>    </div>
+</div>
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+</html>

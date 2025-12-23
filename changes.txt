@@ -1,0 +1,12 @@
+I have made the following changes to the project to make it deployable on Render:
+
+- **`requirements.txt`**: Removed unused dependencies (`fastapi`, `uvicorn`, `waitress`) and added `gunicorn` for production.
+- **`gunicorn_config.py`**: Created a configuration file for `gunicorn` to bind to the correct host and port.
+- **`Dockerfile`**: Updated the base image to `python:3.10-slim` and modified the `CMD` to use `gunicorn`.
+- **`run_production.sh`**: Created a new shell script to run the application in production.
+- **`run_production.bat`**: Removed the old batch file.
+- **`README.md`**: Updated the documentation with instructions on how to deploy the application to Render.
+- **`frontend/script.js`**: Modified the script to clear the file input after submission.
+- **`render.yaml`**: Added a `render.yaml` file to automate the deployment on Render.
+
+The project is now ready to be pushed to a GitHub repository and deployed on Render.
